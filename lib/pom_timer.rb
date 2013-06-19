@@ -1,15 +1,17 @@
 require 'terminal-notifier'
 require 'chronic_duration'
 
-class PomTimer
+class CountdownTimer
   attr_reader :interval, :pom_time
 
-  def initialize
+  def initialize(time, name)
     @interval = 1
+    @pom_time = time
+    @name = name
   end
 
   def countdown(time)
-    time_left = @pom_time = time * 60
+    time_left = time * 60
     while time_left > 0
       output(duration(time_left))
       time_left -= @interval
@@ -27,6 +29,11 @@ class PomTimer
   end
 
   def alert
-    TerminalNotifier.notify("Finished", title:"PomTimer")
+    TerminalNotifier.notify("#{@name} Finished", title:"#{@name} Timer")
   end
+end
+
+
+class PomTimer
+
 end
