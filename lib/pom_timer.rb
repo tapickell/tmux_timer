@@ -19,6 +19,10 @@ class CountdownTimer
     alert
   end
 
+  def start
+    countdown(@pom_time)
+  end
+
   def duration(seconds)
     ChronicDuration::output(seconds, :format => :short)
   end

@@ -9,6 +9,16 @@ describe CountdownTimer do
     @countdown_timer.interval.should == 1
   end
 
+  describe "#start" do
+    before(:each) do
+      @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+    end
+
+    it "should call countdown with minutes for pom" do
+      @countdown_timer.should_receive(:countdown).with(25)
+      @countdown_timer.start
+    end
+  end
   describe "#countdown" do
     before(:each) do
       @countdown_timer = CountdownTimer.new(25, "Pomodoro")
@@ -80,3 +90,5 @@ check status
 pause pom
 cancel pom
 change pom settings
+
+needs call back from CountdownTimer to calling class
