@@ -77,18 +77,50 @@ describe PomTimer do
   before(:each) do
     @pom_timer = PomTimer.new
   end
+
+  it "should init with pom_time setting of 25 min" do
+    @pom_timer.pom_time.should == 25
+  end
+
+  it "should init with break_time setting of 5 min" do
+    @pom_timer.break_time.should == 5
+  end
+
+  describe "#set_timers" do
+    before(:each) do
+      @pom_timer = PomTimer.new
+    end
+
+    it "should change the pom time to passed in value" do
+      expect{@pom_timer.set_timers({:pom_time => 20})}.to change{@pom_timer.pom_time}.by(-5)
+    end
+
+    it "should change the break time to passed in value" do
+      expect{@pom_timer.set_timers({:break_time  => 7})}.to change{@pom_timer.break_time}.by(2)
+    end
+  end
+
+  describe "#start_pom" do
+    before(:each) do
+      @pom_timer = PomTimer.new
+    end
+
+    it "should create a new timer with pom_time setting" do
+      @pom_timer.start_pom
+    end
+  end
 end
 
 
 __END__
 
 start timer service
-end timer service
-check for running service
-start pom
-check status
-pause pom
-cancel pom
-change pom settings
+  end timer service
+  check for running service
+  start pom
+  check status
+  pause pom
+  cancel pom
+  change pom settings
 
-needs call back from CountdownTimer to calling class
+  needs call back from CountdownTimer to calling class

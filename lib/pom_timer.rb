@@ -39,5 +39,23 @@ end
 
 
 class PomTimer
+  attr_reader :pom_time, :break_time
 
+  def initialize(pom_time = 25, break_time = 5)
+    @pom_time = pom_time
+    @break_time = break_time
+  end
+
+  def set_timers(args)
+    if args.has_key?:pom_time
+      @pom_time = args[:pom_time]
+    end
+    if args.has_key?:break_time
+      @break_time = args[:break_time]
+    end
+  end
+
+  def start_pom
+
+  end
 end
