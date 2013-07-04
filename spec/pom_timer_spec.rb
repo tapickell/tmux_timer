@@ -1,8 +1,11 @@
 require "pom_timer"
 
+  POM_EMOJI = "\u{1f345} "
+  BREAK_EMOJI = "\u{270b} "
+
 describe CountdownTimer do
   before(:each) do
-    @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+    @countdown_timer = CountdownTimer.new(25, "Pomodoro", POM_EMOJI)
   end
 
   it "should init with interval of 1" do
@@ -11,7 +14,7 @@ describe CountdownTimer do
 
   describe "#start" do
     before(:each) do
-      @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+      @countdown_timer = CountdownTimer.new(25, "Pomodoro", POM_EMOJI)
     end
 
     it "should call countdown with minutes for pom" do
@@ -21,7 +24,7 @@ describe CountdownTimer do
   end
   describe "#countdown" do
     before(:each) do
-      @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+      @countdown_timer = CountdownTimer.new(25, "Pomodoro", POM_EMOJI)
     end
 
     it "should call output method" do
@@ -37,7 +40,7 @@ describe CountdownTimer do
 
   describe "#duration" do
     before(:each) do
-      @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+      @countdown_timer = CountdownTimer.new(25, "Pomodoro", POM_EMOJI)
     end
 
     it "should return time in min sec format when passed seconds" do
@@ -47,11 +50,11 @@ describe CountdownTimer do
 
   describe "#output" do
     before(:each) do
-      @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+      @countdown_timer = CountdownTimer.new(25, "Pomodoro", POM_EMOJI)
     end
 
     it "should pass formatted data to stdout" do
-      STDOUT.should_receive(:puts).with("Time Left: 1m 30s")
+      STDOUT.should_receive(:puts).with("\u{1f345}  Time Left: 1m 30s")
       @countdown_timer.output("1m 30s")
     end
 
@@ -63,7 +66,7 @@ describe CountdownTimer do
 
   describe "#alert" do
     before(:each) do
-      @countdown_timer = CountdownTimer.new(25, "Pomodoro")
+      @countdown_timer = CountdownTimer.new(25, "Pomodoro", POM_EMOJI)
     end
 
     it "should call notify on terminal notifier" do
@@ -86,6 +89,14 @@ describe PomTimer do
     @pom_timer.break_time.should == 5
   end
 
+  it "should init with a new pom countdown timer object" do
+    @pom_timer.pom_countdown_timer.should be_a(CountdownTimer)
+  end
+
+  it "should init with a new bresk countdown timer object" do
+    @pom_timer.break_countdown_timer.should be_a(CountdownTimer)
+  end
+
   describe "#set_timers" do
     before(:each) do
       @pom_timer = PomTimer.new
@@ -105,8 +116,42 @@ describe PomTimer do
       @pom_timer = PomTimer.new
     end
 
-    it "should create a new timer with pom_time setting" do
+    it "should start a pom timer" do
+      @pom_timer.pom_countdown_timer.should_receive(:start)
       @pom_timer.start_pom
+    end
+  end
+
+  describe "#start_break" do
+    before(:each) do
+      @pom_timer = PomTimer.new
+    end
+
+    it "should start a pom timer" do
+      @pom_timer.break_countdown_timer.should_receive(:start)
+      @pom_timer.start_break
+    end
+  end
+
+  describe "pom_countdown_timer" do
+    before :each do
+      @pom_timer = PomTimer.new
+    end
+
+    it "will output time with the pom emoji" do
+      STDOUT.should_receive(:puts).with("\u{1f345}  Time Left: 1m 5s")
+      @pom_timer.pom_countdown_timer.output("1m 5s")
+    end
+  end
+
+  describe "break_countdown_timer" do
+    before :each do
+      @pom_timer = PomTimer.new
+    end
+
+    it "will output time with the break emoji" do
+      STDOUT.should_receive(:puts).with("\u{270b}  Time Left: 2m 15s")
+      @pom_timer.break_countdown_timer.output("2m 15s")
     end
   end
 end
