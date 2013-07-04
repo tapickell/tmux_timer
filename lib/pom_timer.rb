@@ -17,6 +17,7 @@ class CountdownTimer
     while time_left > 0
       output(duration(time_left))
       time_left -= @interval
+      sleep 1
     end
     alert
   end
